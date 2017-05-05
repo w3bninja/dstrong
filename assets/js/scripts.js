@@ -66,6 +66,53 @@ $(function () {
 	
 	$( "body>[data-role='panel']" ).panel();
 	
+	$('.nav-accordion .video-container .subs').click(function(){
+	  $('i').toggleClass('pause play');
+	});
+	
+	
+	$(".nav-accordion-video li:has(ul li)").find("a:first").addClass("subs");
+	$('.nav-accordion-video .subs i').click(function(e){
+		e.preventDefault();
+    });
+	
+	
+	$.fn.makeItFit = function() {
+		$(this).each(function() {
+			var set = $(this);
+			var setVideo = set.find('.video');
+			var setPlay = set.find('.play');
+			var setPause = set.find('.pause');
+
+			set.fitVids();
+			// Iframe/player variables
+			var iframe = $(setVideo)[0];
+			var player = $f(iframe);
+			// Open on play
+			$(setPlay).click(function(){
+				$(setPause).addClass('show')
+				$(setPlay).addClass('hide')
+				player.api("play");
+				$(setPlay).parent().parent().find('ul').toggle();
+			})
+
+			// Closes on click outside
+			$(setPause).click(function(){
+				$(setPause).removeClass('show')
+				$(setPlay).removeClass('hide')
+				setTimeout(function() {}, 300);
+				player.api("pause");
+				$(setPause).parent().parent().find('ul').toggle();
+			});
+		});
+	};
+	if ($('.video-container').length > 0) {
+		$('.video-container').makeItFit();
+	}
+	
+	
+	
+	
 	
 	// Setting default page transition to slide
     $.mobile.defaultPageTransition = 'slide';
